@@ -14,7 +14,7 @@ body {
     overflow:hidden;
 }
 
-/* 🌸 Soft glow background */
+/* Background glow */
 body::before{
     content:"";
     position:fixed;
@@ -45,7 +45,7 @@ h1 {
     position:relative;
 }
 
-/* blur aura */
+/* Blur aura */
 .hero-photo::before {
     content:"";
     position:absolute;
@@ -57,7 +57,7 @@ h1 {
     z-index:-1;
 }
 
-/* image */
+/* Image */
 .hero-photo img {
     width:250px;
     height:250px;
@@ -66,10 +66,9 @@ h1 {
     opacity:0;
     transform:scale(0.8);
     transition:2s ease;
-    box-shadow:0 0 25px rgba(255,105,135,0.5);
 }
 
-/* float + breathing */
+/* Show + breathing */
 .hero-photo img.show {
     opacity:1;
     transform:scale(1);
@@ -88,22 +87,49 @@ h1 {
     100% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
 }
 
-/* Text */
+/* 💎 TEXT LAYERING */
 .line {
     opacity:0;
     margin:12px auto;
     width:80%;
     font-size:20px;
-    transition:2s ease;
+    transform:translateY(20px) scale(0.95);
+    transition: opacity 1.5s ease, transform 1.5s ease;
 }
+
 .line.show {
     opacity:1;
+    transform:translateY(0) scale(1);
 }
+
+/* Layers */
+.line.layer1 { animation: float1 7s ease-in-out infinite; }
+.line.layer2 { animation: float2 9s ease-in-out infinite; }
+.line.layer3 { animation: float3 11s ease-in-out infinite; }
+
+@keyframes float1 {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+@keyframes float2 {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+@keyframes float3 {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* Depth */
+.layer1 { opacity:0.9; }
+.layer2 { opacity:0.8; }
+.layer3 { opacity:0.7; }
 
 /* Highlight */
 .highlight {
     color:#ff99aa;
     text-shadow:0 0 15px pink;
+    transform:scale(1.05);
 }
 
 /* Ending */
@@ -159,7 +185,7 @@ h1 {
 
 <div class="ending" id="ending">
     <div>💖</div>
-    <div>Happy Birthday dear wife ❣️</div>
+    <div>Happy dear wife ❣️</div>
     <div>"Wishing a magical birthday to the woman who fills my life with love, light, and joy."</div>
     <div>❤️‍🩹🫀♾️</div>
 </div>
@@ -190,7 +216,7 @@ const timeline = [
     { time: 46, text: "I really cherish you more than words can explain." }
 ];
 
-let shown = [];
+let shown = new Set();
 
 function startExperience(){
     audio.play().then(()=>{
@@ -209,15 +235,26 @@ audio.ontimeupdate = ()=>{
     }
 
     timeline.forEach((line,index)=>{
-        if(current>=line.time && !shown.includes(index)){
-            shown.push(index);
+        if(current>=line.time && !shown.has(index)){
+            shown.add(index);
+
             const div=document.createElement("div");
             div.classList.add("line");
+
+            // assign layer
+            const layerType = index % 3;
+            if(layerType === 0) div.classList.add("layer1");
+            if(layerType === 1) div.classList.add("layer2");
+            if(layerType === 2) div.classList.add("layer3");
+
             if(line.highlight) div.classList.add("highlight");
+
             div.innerText=line.text;
             container.appendChild(div);
 
-            setTimeout(()=>div.classList.add("show"),500);
+            requestAnimationFrame(()=>{
+                div.classList.add("show");
+            });
         }
     });
 
