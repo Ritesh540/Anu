@@ -5,7 +5,7 @@
 <title>For Anu 💖</title>
 
 <style>
-body{
+body {
     margin:0;
     background:black;
     color:white;
@@ -14,157 +14,171 @@ body{
     overflow:hidden;
 }
 
-/* Background glow */
-body::before{
-    content:"";
-    position:fixed;
-    width:200%;
-    height:200%;
-    background:radial-gradient(circle, rgba(255,77,109,0.15), black 70%);
-    animation:moveBg 10s linear infinite;
-}
-@keyframes moveBg{
-    from{transform:translate(0,0);}
-    to{transform:translate(-200px,-200px);}
-}
-
-/* Name */
-h1{
+/* Glow title */
+h1 {
     margin-top:40px;
-    font-size:38px;
-    text-shadow:0 0 15px pink;
+    font-size:42px;
+    animation:glow 2s infinite alternate;
+}
+@keyframes glow {
+    from {text-shadow:0 0 10px #ff4d6d;}
+    to {text-shadow:0 0 25px #ff99aa;}
 }
 
-/* Photo section */
-.hero-photo{
-    position:relative;
+/* 🌸 HERO PHOTO */
+.hero-photo {
+    margin-top:20px;
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-top:20px;
+    position:relative;
 }
 
-/* Blur background */
-.hero-photo::before{
+/* glow background */
+.hero-photo::before {
     content:"";
     position:absolute;
-    width:320px;
-    height:320px;
+    width:300px;
+    height:300px;
     background:url('photo1.jpg') center/cover no-repeat;
     filter:blur(25px) brightness(0.6);
     border-radius:50%;
     z-index:-1;
 }
 
-/* Rotating light */
-.hero-photo::after{
-    content:"";
-    position:absolute;
-    width:320px;
-    height:320px;
-    border-radius:50%;
-    background:conic-gradient(from 0deg,#ff4d6d,transparent,#ff99aa,transparent,#ff4d6d);
-    animation:rotateLight 6s linear infinite;
-    filter:blur(20px);
-    z-index:-2;
-}
-@keyframes rotateLight{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
-}
-
-/* Main image */
-.hero-photo img{
-    width:260px;
-    height:260px;
+/* main image */
+.hero-photo img {
+    width:250px;
+    height:250px;
     border-radius:50%;
     object-fit:cover;
     opacity:0;
-    transform:scale(0.5);
-    transition:1.5s;
-    box-shadow:0 0 30px pink,0 0 80px #ff4d6d;
+    transform:scale(0.6);
+    transition:1.5s ease;
+    box-shadow:0 0 20px pink,0 0 40px #ff4d6d;
 }
 
-/* Show */
-.hero-photo img.show{
+/* show animation */
+.hero-photo img.show {
     opacity:1;
     transform:scale(1);
-    animation:float 3s ease-in-out infinite;
+    animation:floatUpDown 4s ease-in-out infinite;
 }
 
-@keyframes float{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
+/* floating */
+@keyframes floatUpDown {
+    0%,100% {transform:translateY(0);}
+    50% {transform:translateY(-12px);}
 }
 
-/* Heartbeat */
-.hero-photo img.beat{
-    animation:heartbeat 1.2s infinite;
-}
-@keyframes heartbeat{
-    0%{transform:scale(1);}
-    25%{transform:scale(1.08);}
-    50%{transform:scale(1);}
-    75%{transform:scale(1.12);}
-    100%{transform:scale(1);}
+/* 💓 heartbeat pulse */
+@keyframes pulseBeat {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.12); }
+    60%  { transform: scale(1); }
+    100% { transform: scale(1); }
 }
 
-/* Text */
-.line{
+.hero-photo img.pulse {
+    animation: pulseBeat 0.6s ease;
+}
+
+/* Text lines */
+.line {
     opacity:0;
-    margin:10px;
+    margin:12px auto;
+    width:80%;
     font-size:20px;
+    transform:translateY(20px);
     transition:1s;
 }
-.line.show{opacity:1;}
-.highlight{color:#ff99aa;}
+.line.show {
+    opacity:1;
+    transform:translateY(0) scale(1.05);
+}
+.highlight {
+    color:#ff99aa;
+    font-weight:bold;
+    text-shadow:0 0 20px pink;
+}
+
+/* Floating hearts */
+.heart {
+    position:fixed;
+    bottom:-10px;
+    font-size:22px;
+    animation:float 5s linear infinite;
+}
+@keyframes float {
+    to {transform:translateY(-100vh); opacity:0;}
+}
+
+/* Sparkles */
+.sparkle {
+    position:fixed;
+    width:8px;
+    height:8px;
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    pointer-events:none;
+    animation:sparkleAnim 3s linear infinite;
+}
+@keyframes sparkleAnim {
+    0% {transform:translateY(0) scale(0.5);}
+    50% {transform:translateY(-200px) scale(1);}
+    100% {transform:translateY(-400px) scale(0.3); opacity:0;}
+}
 
 /* Ending */
-.ending{
+.ending {
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:black;
+    color:#ff99aa;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    background:black;
+    font-size:28px;
     opacity:0;
     transition:2s;
 }
-.ending.show{opacity:1;}
-.big-heart{font-size:80px;}
-
-/* Explosion */
-.explosion{
-    position:fixed;
-    font-size:25px;
-    animation:explode 1s forwards;
+.ending.show {opacity:1;}
+.big-heart {
+    font-size:90px;
+    animation:boom 1s ease forwards;
 }
-@keyframes explode{
-    from{opacity:1; transform:scale(0);}
-    to{opacity:0; transform:scale(5);}
+@keyframes boom {
+    0% {transform:scale(0);}
+    100% {transform:scale(1.5);}
 }
 
 /* Overlay */
-#overlay{
+#overlay {
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
+    top:0; left:0;
+    width:100%; height:100%;
     background:black;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
-    z-index:10;
+    flex-direction:column;
+    font-size:24px;
+    z-index:1000;
+    text-align:center;
+    padding:20px;
 }
 
-button{
+#startBtn {
+    margin-top:20px;
     padding:12px 25px;
-    font-size:18px;
+    font-size:20px;
+    border-radius:12px;
     border:none;
-    border-radius:10px;
     background:pink;
+    color:black;
     cursor:pointer;
 }
 </style>
@@ -172,7 +186,7 @@ button{
 
 <body>
 
-<h1 id="nameReveal"></h1>
+<h1>HEY ANU ❤️</h1>
 
 <div class="hero-photo">
     <img src="photo1.jpg" id="mainPhoto">
@@ -193,105 +207,103 @@ button{
 
 <div id="overlay">
     💖 Open my princess, the surprise awaits 💖
-    <button id="startBtn">Open My Heart 💖</button>
+    <button id="startBtn">💖 Open My Heart 💖</button>
 </div>
 
 <script>
-const audio=document.getElementById("bgMusic");
-const overlay=document.getElementById("overlay");
-const btn=document.getElementById("startBtn");
-const container=document.getElementById("message");
+const audio = document.getElementById("bgMusic");
+const overlay = document.getElementById("overlay");
+const startBtn = document.getElementById("startBtn");
+const container = document.getElementById("message");
 
-/* Name reveal */
-const name="HEY ANU ❤️";
-let i=0;
-function revealName(){
-    if(i<name.length){
-        document.getElementById("nameReveal").innerHTML+=name.charAt(i);
-        i++;
-        setTimeout(revealName,120);
-    }
+let beatInterval;
+
+function startHeartbeat(){
+    const photo = document.getElementById("mainPhoto");
+
+    beatInterval = setInterval(()=>{
+        photo.classList.add("pulse");
+
+        setTimeout(()=>{
+            photo.classList.remove("pulse");
+        },600);
+
+    }, 900); // adjust based on song
 }
 
-/* Typing */
-function typeLine(text,div){
-    let i=0;
-    function t(){
-        if(i<text.length){
-            div.innerHTML+=text.charAt(i);
-            i++;
-            setTimeout(t,40);
-        }
-    }
-    t();
-}
-
-/* Timeline */
-const timeline=[
-    {time:3,text:"I tried to write something perfect for you..."},
-    {time:8,text:"but every word feels small in front of you..."},
-    {time:14,text:"From the moment you came into my life..."},
-    {time:19,text:"everything changed into something beautiful."},
-    {time:25,text:"ANU... YOU ARE MY WORLD 💖",highlight:true},
-    {time:28,text:"Anu, you are the most beautiful part of my life 💫"},
-    {time:32,text:"Your smile is my peace..."},
-    {time:38,text:"Your love is my strength..."},
-    {time:45,text:"And you... are my forever ♾️"}
+const timeline = [
+    { time: 3, text: "I’ve been trying to find the right words for you," },
+    { time: 7, text: "but honestly… nothing ever feels enough..." },
+    { time: 12, text: "From the day you came into my life," },
+    { time: 16, text: "everything started feeling more meaningful." },
+    { time: 22, text: "ANU... YOU ARE TRULY THE PRINCESS OF MY HEART 👑", highlight: true },
+    { time: 28, text: "Your smile fixes my worst days," },
+    { time: 32, text: "and your presence brings me peace." },
+    { time: 38, text: "I really cherish you more than words can explain." },
+    { time: 45, text: "Stay the same amazing person always 💫" }
 ];
 
-let shown=[];
+let shown = [];
 
-/* Explosion */
-function loveExplosion(){
-    for(let i=0;i<20;i++){
-        let el=document.createElement("div");
-        el.innerHTML="💖";
-        el.classList.add("explosion");
-        el.style.left=Math.random()*100+"vw";
-        el.style.top=Math.random()*100+"vh";
-        document.body.appendChild(el);
-        setTimeout(()=>el.remove(),1000);
-    }
-}
-
-/* Start */
-function start(){
+function startExperience() {
     audio.play().then(()=>{
-        overlay.style.display="none";
-        revealName();
+        overlay.style.display = "none";
+
+        // start heartbeat after music starts
+        setTimeout(startHeartbeat, 2000);
+
+    }).catch(()=>{
+        alert("Tap again to start music 💖");
     });
 }
-btn.onclick=start;
-overlay.onclick=start;
 
-/* Timeline */
-audio.ontimeupdate=()=>{
-    let current=audio.currentTime;
+startBtn.addEventListener("click", startExperience);
+overlay.addEventListener("click", startExperience);
 
-    if(current>=2){
+audio.ontimeupdate = ()=>{
+    let current = audio.currentTime;
+
+    if(current >= 1){
         document.getElementById("mainPhoto").classList.add("show");
-    }
-    if(current>=4){
-        document.getElementById("mainPhoto").classList.add("beat");
     }
 
     timeline.forEach((line,index)=>{
         if(current>=line.time && !shown.includes(index)){
             shown.push(index);
-            let div=document.createElement("div");
+            const div = document.createElement("div");
             div.classList.add("line");
             if(line.highlight) div.classList.add("highlight");
+            div.innerText = line.text;
             container.appendChild(div);
-            typeLine(line.text,div);
             setTimeout(()=>div.classList.add("show"),100);
         }
     });
 
-    if(current>=55){
+    if(current>=60){
         document.getElementById("ending").classList.add("show");
-        loveExplosion();
+        clearInterval(beatInterval);
     }
 };
+
+// Hearts
+setInterval(()=>{
+    const heart=document.createElement("div");
+    heart.innerHTML="💖";
+    heart.classList.add("heart");
+    heart.style.left=Math.random()*100+"vw";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+},300);
+
+// Sparkles
+setInterval(()=>{
+    const sparkle=document.createElement("div");
+    sparkle.classList.add("sparkle");
+    sparkle.style.left=Math.random()*100+"vw";
+    sparkle.style.top=Math.random()*100+"vh";
+    document.body.appendChild(sparkle);
+    setTimeout(()=>sparkle.remove(),3000);
+},200);
 </script>
 
 </body>
