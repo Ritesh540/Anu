@@ -14,28 +14,49 @@ body {
     overflow:hidden;
 }
 
-/* 🌸 Background glow */
-body::before{
-    content:"";
+/* 💖 HEART BACKGROUND */
+.heart {
     position:fixed;
-    width:200%;
-    height:200%;
-    background:radial-gradient(circle, rgba(255,77,109,0.12), black 70%);
-    animation:bgMove 15s linear infinite;
-}
-@keyframes bgMove{
-    from{transform:translate(0,0);}
-    to{transform:translate(-150px,-150px);}
+    bottom:-20px;
+    pointer-events:none;
+    animation: floatHeart linear forwards;
+    opacity:0.7;
 }
 
-/* 💖 TITLE FLOAT */
+@keyframes floatHeart {
+    0% { transform: translateY(0) scale(0.6); opacity:0; }
+    20% { opacity:0.8; }
+    100% { transform: translateY(-120vh) scale(1.3); opacity:0; }
+}
+
+/* 👑 TITLE */
 h1 {
     margin-top:40px;
     font-size:42px;
     position:relative;
     z-index:2;
-    animation: softGlow 3s ease-in-out infinite alternate,
+    animation: glow 3s ease-in-out infinite alternate,
                floatSlow 8s ease-in-out infinite;
+}
+
+h1::before {
+    content:"👑";
+    position:absolute;
+    top:-30px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:28px;
+    animation: crownFloat 5s ease-in-out infinite;
+}
+
+@keyframes crownFloat {
+    0%,100% { transform: translate(-50%,0); }
+    50% { transform: translate(-50%,-6px); }
+}
+
+@keyframes glow {
+    0% { text-shadow:0 0 10px #ff4d6d; }
+    100% { text-shadow:0 0 30px #ff99aa; }
 }
 
 /* 🌸 PHOTO */
@@ -48,17 +69,17 @@ h1 {
 .hero-photo::before {
     content:"";
     position:absolute;
-    width:300px;
-    height:300px;
+    width:320px;
+    height:320px;
     background:url('photo1.jpg') center/cover no-repeat;
-    filter:blur(25px) brightness(0.6);
+    filter:blur(30px) brightness(0.5);
     border-radius:50%;
     z-index:-1;
 }
 
 .hero-photo img {
-    width:250px;
-    height:250px;
+    width:260px;
+    height:260px;
     border-radius:50%;
     object-fit:cover;
     opacity:0;
@@ -73,20 +94,22 @@ h1 {
                breathe 4s ease-in-out infinite;
 }
 
-/* 💎 TEXT */
-#message {
-    position:relative;
-    z-index:2;
+/* 💓 breathing */
+@keyframes breathe {
+    0% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
+    50% {box-shadow:0 0 60px rgba(255,105,135,0.9);}
+    100% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
 }
 
+/* 💎 TEXT */
 .line {
     opacity:0;
     margin:12px auto;
-    width:80%;
+    width:85%;
     font-size:20px;
     transform:translateY(20px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
-    will-change: transform;
+    transition:1.5s ease;
+    text-shadow:0 0 10px rgba(255,153,170,0.7);
 }
 
 .line.show {
@@ -94,96 +117,67 @@ h1 {
     transform:translateY(0);
 }
 
-/* 🌸 FLOATING LAYERS */
-.line.float1 { animation: floatSlow 8s ease-in-out infinite; }
-.line.float2 { animation: floatMedium 10s ease-in-out infinite; }
-.line.float3 { animation: floatDeep 12s ease-in-out infinite; }
+.line.float1 { animation: floatSlow 8s infinite ease-in-out; }
+.line.float2 { animation: floatMedium 10s infinite ease-in-out; }
+.line.float3 { animation: floatDeep 12s infinite ease-in-out; }
 
 @keyframes floatSlow {
-    0%,100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
 }
-
 @keyframes floatMedium {
-    0%,100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
-
 @keyframes floatDeep {
-    0%,100% { transform: translateY(0); }
     50% { transform: translateY(-14px); }
 }
 
-/* 💓 PHOTO GLOW */
-@keyframes breathe {
-    0% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
-    50% {box-shadow:0 0 40px rgba(255,105,135,0.7);}
-    100% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
-}
-
-/* ✨ TEXT GLOW */
-@keyframes softGlow {
-    0% { text-shadow:0 0 8px #ff4d6d; }
-    100% { text-shadow:0 0 20px #ff99aa; }
-}
-
-/* 💖 BACKGROUND HEARTS */
-.heart {
+/* 💥 HEART EXPLOSION */
+.burst {
     position:fixed;
-    bottom:-20px;
-    color:rgba(255,153,170,0.7);
-    pointer-events:none;
-    animation: floatHeart linear forwards;
-    z-index:0;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:30px;
+    animation: burstAnim 1s ease forwards;
 }
 
-@keyframes floatHeart {
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity:0;
-    }
-    20% { opacity:0.6; }
-    100% {
-        transform: translateY(-110vh) scale(1.2);
-        opacity:0;
-    }
+@keyframes burstAnim {
+    0% { transform:translate(-50%,-50%) scale(0); }
+    100% { transform:translate(-50%,-50%) scale(3); opacity:0; }
 }
 
 /* 💖 ENDING */
 .ending {
     position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    width:100%;
+    height:100%;
     background:black;
-    color:#ff99aa;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
+    flex-direction:column;
+    color:#ff99aa;
     font-size:28px;
     opacity:0;
     transition:3s;
-    z-index:3;
 }
 .ending.show {opacity:1;}
 
-/* 💫 OVERLAY */
+/* overlay */
 #overlay {
     position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    width:100%;
+    height:100%;
     background:black;
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
-    z-index:5;
+    z-index:10;
 }
 
-#startBtn {
-    margin-top:20px;
-    padding:12px 25px;
-    font-size:18px;
+button {
+    padding:12px 20px;
     border:none;
     border-radius:10px;
     background:pink;
@@ -202,98 +196,89 @@ h1 {
 <div id="message"></div>
 
 <div class="ending" id="ending">
-    <div>💖</div>
+    <div>💖💖💖</div>
     <div>Happy dear wife ❣️</div>
-    <div>"Wishing a magical birthday to the woman who fills my life with love, light, and joy."</div>
+    <div>✨ You are my forever, my always ✨</div>
     <div>❤️‍🩹🫀♾️</div>
 </div>
 
 <audio id="bgMusic">
-    <source src="song.mp3" type="audio/mp3">
+<source src="song.mp3">
 </audio>
 
 <div id="overlay">
-    💖 Open my princess, the surprise awaits 💖
-    <button id="startBtn">Open My Heart 💖</button>
+💖 Open my princess 💖
+<button onclick="start()">Open My Heart</button>
 </div>
 
 <script>
-const audio = document.getElementById("bgMusic");
-const overlay = document.getElementById("overlay");
-const btn = document.getElementById("startBtn");
-const container = document.getElementById("message");
+const audio=document.getElementById("bgMusic");
+const msg=document.getElementById("message");
 
-const timeline = [
-    { time: 3, text: "I’ve been trying to find the right words for you," },
-    { time: 8, text: "but honestly… nothing ever feels enough..." },
-    { time: 14, text: "From the day you came into my life," },
-    { time: 20, text: "everything started feeling more meaningful." },
-    { time: 26, text: "ANU... YOU ARE MY WORLD 💖", highlight: true },
-    { time: 34, text: "Your smile fixes my worst days," },
-    { time: 40, text: "and your presence brings me peace." },
-    { time: 46, text: "I really cherish you more than words can explain." }
+const timeline=[
+"💭 I tried to find perfect words 💖",
+"🥺 but nothing feels enough...",
+"🌸 You changed my life completely",
+"✨ Everything feels beautiful now",
+"👑 ANU... YOU ARE MY WORLD 💖",
+"😊 Your smile heals me",
+"🫶 Your presence is peace",
+"💞 I cherish you forever"
 ];
 
-let shown = new Set();
+let shown=0;
 
-function startExperience(){
-    audio.play().then(()=>{
-        overlay.style.display="none";
-    });
+function start(){
+audio.play();
+overlay.style.display="none";
 }
 
-btn.onclick = startExperience;
-overlay.onclick = startExperience;
+audio.ontimeupdate=()=>{
+let t=audio.currentTime;
 
-audio.ontimeupdate = ()=>{
-    let current = audio.currentTime;
+if(t>1) mainPhoto.classList.add("show");
 
-    if(current >= 1){
-        document.getElementById("mainPhoto").classList.add("show");
-    }
+if(t>3 && shown<timeline.length){
+let div=document.createElement("div");
+div.classList.add("line");
 
-    timeline.forEach((line,index)=>{
-        if(current>=line.time && !shown.has(index)){
-            shown.add(index);
+let type=shown%3;
+div.classList.add("float"+(type+1));
 
-            const div=document.createElement("div");
-            div.classList.add("line");
+div.innerText=timeline[shown];
+msg.appendChild(div);
 
-            const type = index % 3;
-            if(type === 0) div.classList.add("float1");
-            if(type === 1) div.classList.add("float2");
-            if(type === 2) div.classList.add("float3");
+setTimeout(()=>div.classList.add("show"),100);
+shown++;
+}
 
-            if(line.highlight) div.classList.add("highlight");
+if(t>40){
+document.getElementById("ending").classList.add("show");
 
-            div.innerText=line.text;
-            container.appendChild(div);
-
-            requestAnimationFrame(()=>{
-                div.classList.add("show");
-            });
-        }
-    });
-
-    if(current>=55){
-        document.getElementById("ending").classList.add("show");
-    }
+/* 💥 heart burst */
+for(let i=0;i<20;i++){
+let b=document.createElement("div");
+b.className="burst";
+b.innerHTML="💖";
+b.style.left=Math.random()*100+"%";
+b.style.top=Math.random()*100+"%";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),1000);
+}
+}
 };
 
-/* 💖 Floating hearts */
+/* 💖 background hearts */
 setInterval(()=>{
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "💖";
-
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (14 + Math.random()*10) + "px";
-    heart.style.animationDuration = (6 + Math.random()*4) + "s";
-
-    document.body.appendChild(heart);
-
-    setTimeout(()=>heart.remove(),10000);
-},600);
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML=["💖","💕","💓","💞"][Math.floor(Math.random()*4)];
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(12+Math.random()*20)+"px";
+h.style.animationDuration=(4+Math.random()*6)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),10000);
+},150);
 </script>
 
 </body>
