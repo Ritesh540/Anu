@@ -14,7 +14,7 @@ body {
     overflow:hidden;
 }
 
-/* Background glow */
+/* 🌸 Background glow */
 body::before{
     content:"";
     position:fixed;
@@ -28,24 +28,23 @@ body::before{
     to{transform:translate(-150px,-150px);}
 }
 
-/* Title */
+/* 💖 TITLE FLOAT */
 h1 {
     margin-top:40px;
-    font-size:40px;
-    animation:softGlow 3s ease-in-out infinite alternate;
-}
-@keyframes softGlow {
-    from {text-shadow:0 0 8px #ff4d6d;}
-    to {text-shadow:0 0 20px #ff99aa;}
+    font-size:42px;
+    position:relative;
+    z-index:2;
+    animation: softGlow 3s ease-in-out infinite alternate,
+               floatSlow 8s ease-in-out infinite;
 }
 
-/* 🌸 Photo */
+/* 🌸 PHOTO */
 .hero-photo {
     margin-top:20px;
     position:relative;
+    z-index:2;
 }
 
-/* Blur aura */
 .hero-photo::before {
     content:"";
     position:absolute;
@@ -57,7 +56,6 @@ h1 {
     z-index:-1;
 }
 
-/* Image */
 .hero-photo img {
     width:250px;
     height:250px;
@@ -68,71 +66,90 @@ h1 {
     transition:2s ease;
 }
 
-/* Show + breathing */
 .hero-photo img.show {
     opacity:1;
     transform:scale(1);
-    animation:float 6s ease-in-out infinite,
-              breathe 4s ease-in-out infinite;
+    animation: floatMedium 6s ease-in-out infinite,
+               breathe 4s ease-in-out infinite;
 }
 
-@keyframes float {
-    0%,100% {transform:translateY(0);}
-    50% {transform:translateY(-10px);}
+/* 💎 TEXT */
+#message {
+    position:relative;
+    z-index:2;
 }
 
+.line {
+    opacity:0;
+    margin:12px auto;
+    width:80%;
+    font-size:20px;
+    transform:translateY(20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+    will-change: transform;
+}
+
+.line.show {
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* 🌸 FLOATING LAYERS */
+.line.float1 { animation: floatSlow 8s ease-in-out infinite; }
+.line.float2 { animation: floatMedium 10s ease-in-out infinite; }
+.line.float3 { animation: floatDeep 12s ease-in-out infinite; }
+
+@keyframes floatSlow {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes floatMedium {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes floatDeep {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+
+/* 💓 PHOTO GLOW */
 @keyframes breathe {
     0% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
     50% {box-shadow:0 0 40px rgba(255,105,135,0.7);}
     100% {box-shadow:0 0 20px rgba(255,105,135,0.4);}
 }
 
-/* 💎 TEXT LAYERING */
-.line {
-    opacity:0;
-    margin:12px auto;
-    width:80%;
-    font-size:20px;
-    transform:translateY(20px) scale(0.95);
-    transition: opacity 1.5s ease, transform 1.5s ease;
+/* ✨ TEXT GLOW */
+@keyframes softGlow {
+    0% { text-shadow:0 0 8px #ff4d6d; }
+    100% { text-shadow:0 0 20px #ff99aa; }
 }
 
-.line.show {
-    opacity:1;
-    transform:translateY(0) scale(1);
+/* 💖 BACKGROUND HEARTS */
+.heart {
+    position:fixed;
+    bottom:-20px;
+    color:rgba(255,153,170,0.7);
+    pointer-events:none;
+    animation: floatHeart linear forwards;
+    z-index:0;
 }
 
-/* Layers */
-.line.layer1 { animation: float1 7s ease-in-out infinite; }
-.line.layer2 { animation: float2 9s ease-in-out infinite; }
-.line.layer3 { animation: float3 11s ease-in-out infinite; }
-
-@keyframes float1 {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-@keyframes float2 {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-@keyframes float3 {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+@keyframes floatHeart {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity:0;
+    }
+    20% { opacity:0.6; }
+    100% {
+        transform: translateY(-110vh) scale(1.2);
+        opacity:0;
+    }
 }
 
-/* Depth */
-.layer1 { opacity:0.9; }
-.layer2 { opacity:0.8; }
-.layer3 { opacity:0.7; }
-
-/* Highlight */
-.highlight {
-    color:#ff99aa;
-    text-shadow:0 0 15px pink;
-    transform:scale(1.05);
-}
-
-/* Ending */
+/* 💖 ENDING */
 .ending {
     position:fixed;
     top:0; left:0;
@@ -146,10 +163,11 @@ h1 {
     font-size:28px;
     opacity:0;
     transition:3s;
+    z-index:3;
 }
 .ending.show {opacity:1;}
 
-/* Overlay */
+/* 💫 OVERLAY */
 #overlay {
     position:fixed;
     top:0; left:0;
@@ -159,7 +177,7 @@ h1 {
     justify-content:center;
     align-items:center;
     flex-direction:column;
-    z-index:10;
+    z-index:5;
 }
 
 #startBtn {
@@ -241,11 +259,10 @@ audio.ontimeupdate = ()=>{
             const div=document.createElement("div");
             div.classList.add("line");
 
-            // assign layer
-            const layerType = index % 3;
-            if(layerType === 0) div.classList.add("layer1");
-            if(layerType === 1) div.classList.add("layer2");
-            if(layerType === 2) div.classList.add("layer3");
+            const type = index % 3;
+            if(type === 0) div.classList.add("float1");
+            if(type === 1) div.classList.add("float2");
+            if(type === 2) div.classList.add("float3");
 
             if(line.highlight) div.classList.add("highlight");
 
@@ -262,6 +279,21 @@ audio.ontimeupdate = ()=>{
         document.getElementById("ending").classList.add("show");
     }
 };
+
+/* 💖 Floating hearts */
+setInterval(()=>{
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (14 + Math.random()*10) + "px";
+    heart.style.animationDuration = (6 + Math.random()*4) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),10000);
+},600);
 </script>
 
 </body>
