@@ -18,7 +18,6 @@ body{
 .heart{
     position:fixed;
     bottom:-20px;
-    pointer-events:none;
     animation:floatHeart linear forwards;
     opacity:0.7;
 }
@@ -42,110 +41,68 @@ h1::before{
     top:-28px;
     left:50%;
     transform:translateX(-50%);
-    animation:crownFloat 5s infinite ease-in-out;
+    animation:crownFloat 5s infinite;
 }
-@keyframes crownFloat{
-    50%{transform:translate(-50%,-6px);}
-}
+@keyframes crownFloat{50%{transform:translate(-50%,-6px);}}
 @keyframes glow{
     from{text-shadow:0 0 10px #ff4d6d;}
     to{text-shadow:0 0 25px #ff99aa;}
 }
 
 /* 🌸 PHOTO */
-.hero-photo img{
+.hero img{
     width:260px;
-    height:260px;
     border-radius:50%;
     margin-top:20px;
     opacity:0;
     transition:2s;
 }
-.hero-photo img.show{
+.hero img.show{
     opacity:1;
-    animation:floatMedium 6s infinite ease-in-out,
-              breathe 4s infinite ease-in-out;
+    animation:breathe 4s infinite;
 }
 @keyframes breathe{
     50%{box-shadow:0 0 60px rgba(255,105,135,0.9);}
 }
 
-/* 💎 TEXT */
+/* 💬 TEXT */
 .line{
     opacity:0;
-    margin:12px auto;
-    width:85%;
+    margin:12px;
     font-size:20px;
     transition:1.5s;
-    text-shadow:0 0 10px rgba(255,153,170,0.8);
 }
 .line.show{opacity:1;}
 
-.line.float1{animation:floatSlow 8s infinite;}
-.line.float2{animation:floatMedium 10s infinite;}
-.line.float3{animation:floatDeep 12s infinite;}
-
-@keyframes floatSlow{50%{transform:translateY(-6px);}}
-@keyframes floatMedium{50%{transform:translateY(-10px);}}
-@keyframes floatDeep{50%{transform:translateY(-14px);}}
-
-/* 🎬 BOLLYWOOD CLIMAX */
-.ending{
-    position:fixed;
+/* 🎬 PAGE SYSTEM */
+.page{
+    position:absolute;
     width:100%;
     height:100%;
     top:0;
     left:0;
-    background:radial-gradient(circle, rgba(255,153,170,0.15), black 70%);
+    transition:1.5s;
+}
+.hidden{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* 💖 END PAGE */
+.end-page{
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    opacity:0;
-    transform:scale(0.85);
-    transition:3s ease;
-    z-index:10;
-}
-.ending.show{
-    opacity:1;
-    transform:scale(1);
-    animation:zoomIn 6s ease forwards;
 }
 
-@keyframes zoomIn{
-    from{transform:scale(0.85);}
-    to{transform:scale(1.05);}
-}
-
-/* text lines */
-.ending div{
-    opacity:0;
-    transform:translateY(40px);
+/* glowing text */
+.final-text{
     font-size:30px;
-    margin:12px 0;
     color:#ffb3c6;
     text-shadow:0 0 20px #ff99aa;
-}
-
-.ending.show div:nth-child(1){animation:fadeIn 1.5s forwards 0.5s;}
-.ending.show div:nth-child(2){animation:fadeIn 1.5s forwards 1.5s;}
-.ending.show div:nth-child(3){animation:fadeIn 1.5s forwards 2.5s;}
-.ending.show div:nth-child(4){animation:fadeIn 1.5s forwards 3.5s;}
-
-@keyframes fadeIn{
-    to{opacity:1;transform:translateY(0) scale(1.05);}
-}
-
-/* 💓 BIG HEART */
-.ending::before{
-    content:"💖";
-    position:absolute;
-    font-size:180px;
-    opacity:0.08;
-    animation:heartPulse 4s infinite;
-}
-@keyframes heartPulse{
-    50%{transform:scale(1.5);opacity:0.2;}
+    animation:floatSlow 6s infinite ease-in-out,
+              glow 3s infinite alternate;
 }
 
 /* overlay */
@@ -171,19 +128,28 @@ button{
 
 <body>
 
+<!-- 💖 PAGE 1 -->
+<div id="page1" class="page">
+
 <h1>HEY ANU ❤️</h1>
 
-<div class="hero-photo">
+<div class="hero">
 <img src="photo1.jpg" id="photo">
 </div>
 
 <div id="msg"></div>
 
-<div class="ending" id="end">
-<div>💖💖💖</div>
-<div>Happy dear wife ❣️</div>
-<div>✨ Wishing a magical birthday to the woman who fills my life with love, light, and joy ✨</div>
-<div>❤️‍🩹🫀♾️</div>
+</div>
+
+<!-- 💖 PAGE 2 (ENDING) -->
+<div id="page2" class="page hidden end-page">
+
+<img src="photo1.jpg" style="width:260px;border-radius:50%;animation:breathe 4s infinite;">
+
+<div class="final-text">💖 Happy dear wife ❣️</div>
+<div class="final-text">✨ Wishing a magical birthday to the woman who fills my life with love, light, and joy ✨</div>
+<div class="final-text">❤️‍🩹🫀♾️</div>
+
 </div>
 
 <audio id="music">
@@ -199,7 +165,6 @@ button{
 const music=document.getElementById("music");
 const msg=document.getElementById("msg");
 
-/* 🎵 BEAT TIMELINE */
 const timeline=[
 {t:2,text:"💭 I tried to find perfect words 💖"},
 {t:6,text:"🥺 but nothing feels enough..."},
@@ -218,7 +183,7 @@ music.play();
 overlay.style.display="none";
 }
 
-/* 🎬 TIMELINE */
+/* 🎬 MAIN FLOW */
 music.ontimeupdate=()=>{
 let t=music.currentTime;
 
@@ -229,7 +194,7 @@ if(t>=l.t && !shown.includes(i)){
 shown.push(i);
 
 let d=document.createElement("div");
-d.className="line float"+(i%3+1);
+d.className="line";
 d.innerText=l.text;
 
 msg.appendChild(d);
@@ -237,32 +202,14 @@ setTimeout(()=>d.classList.add("show"),100);
 }
 });
 
-/* 💥 CLIMAX */
+/* 🎬 SWITCH TO END PAGE */
 if(t>35){
-document.getElementById("end").classList.add("show");
-
-/* 💥 HEART EXPLOSION */
-for(let i=0;i<40;i++){
-let h=document.createElement("div");
-h.innerHTML="💖";
-h.style.position="fixed";
-h.style.left="50%";
-h.style.top="50%";
-let x=(Math.random()-0.5)*600;
-let y=(Math.random()-0.5)*600;
-
-h.animate([
-{transform:"translate(-50%,-50%) scale(0)",opacity:1},
-{transform:`translate(${x}px,${y}px) scale(1.5)`,opacity:0}
-],{duration:2000});
-
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),2000);
-}
+document.getElementById("page1").classList.add("hidden");
+document.getElementById("page2").classList.remove("hidden");
 }
 };
 
-/* 💖 BACKGROUND HEARTS (START IMMEDIATELY) */
+/* 💖 HEARTS */
 setInterval(()=>{
 let h=document.createElement("div");
 h.className="heart";
@@ -270,7 +217,6 @@ h.innerHTML=["💖","💕","💓","💞"][Math.floor(Math.random()*4)];
 h.style.left=Math.random()*100+"vw";
 h.style.fontSize=(12+Math.random()*20)+"px";
 h.style.animationDuration=(4+Math.random()*6)+"s";
-
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),10000);
 },120);
